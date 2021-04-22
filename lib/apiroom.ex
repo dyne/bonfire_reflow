@@ -1,8 +1,8 @@
-defmodule Zenpub.Apiroom do
-  import Zenpub.Apiroom.Util, only: [maybe_put: 3]
+defmodule Bonfire.Reflow.Apiroom do
+  import Bonfire.Common.Utils, only: [maybe_put: 3]
 
   @moduledoc """
-  A Zenpub/Bonfire extension for communicating with ZenRoom's APIRoom project.
+  A Bonfire.Reflow/Bonfire extension for communicating with ZenRoom's APIRoom project.
 
   See https://apiroom.net
   """
@@ -54,11 +54,11 @@ defmodule Zenpub.Apiroom do
     end
   end
 
-  defp config_api_endpoint() do
-    CommonsPub.Config.get!([__MODULE__, :api_endpoint])
+  defp config_api_endpoint do
+    Bonfire.Common.Config.get!([__MODULE__, :api_endpoint])
   end
 
-  defp config_keys() do
-    CommonsPub.Config.get([__MODULE__, :keys])
+  defp config_keys do
+    Bonfire.Common.Config.get([__MODULE__, :keys])
   end
 end
