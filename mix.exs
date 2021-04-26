@@ -1,4 +1,4 @@
-defmodule BonfireFiles.MixProject do
+defmodule BonfireReflow.MixProject do
   use Mix.Project
 
   def project do
