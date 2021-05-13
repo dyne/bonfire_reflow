@@ -6,7 +6,8 @@ defmodule Bonfire.Reflow.EconomicEvents do
 
   def create(creator, attrs, extra_attrs \\ %{}) do
     with {:ok, event} <- EconomicEvents.create(creator, attrs, extra_attrs),
-         {:ok, signature} <- Bonfire.Reflow.sign(event) do
+         {:ok, signature} <- Bonfire.Reflow.sign(event),
+         {:ok, _} <- Bonfire.Reflow.verify(signature) do
       repo().update(Signed.changeset(signature))
     end
   end
