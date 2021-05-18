@@ -13,32 +13,34 @@ defmodule Bonfire.Reflow.Apiroom do
     {"Content-Type", "application/json"}
   ]
 
-  @spec signatures(http_client :: atom, data :: map, keys :: map) :: {:ok, map} | {:error, term}
-  def signatures(http_client, data, keys) do
+  @spec fetch(http_client :: atom, path :: binary, data :: map, keys :: map) :: {:ok, map} | {:error, term}
+  def fetch(http_client, path, data, keys) do
     keys = if keys, do: keys, else: config_keys()
 
     payload = %{data: data} |> maybe_put(:keys, keys) |> Jason.encode!()
 
-    with {:ok, status, _headers, client} <- push_remote(http_client, payload),
+    with {:ok, status, _headers, client} <- push_remote(http_client, path, payload),
          :ok <- response_status_ok(http_client, client, status),
-         {:ok, signatures} <- http_client.body(client) do
-      Jason.decode(signatures)
+         {:ok, response} <- http_client.body(client) do
+      Jason.decode(response)
     end
   end
 
   @doc """
-  Fetch signatures from the API room client for the given data.
+  Fetch from the API room client data, given a path.
 
   An optional keys parameter is provided for overriding the hard-coded
   keys set during configuration.
   """
-  @spec signatures(data :: map, keys :: map) :: {:ok, map} | {:error, term}
-  def signatures(data, keys \\ nil) do
-    signatures(@default_http_client, data, keys)
+  @spec fetch(path :: binary, data :: map, keys :: map) :: {:ok, map} | {:error, term}
+  def fetch(path, data, keys \\ nil) do
+    signatures(@default_http_client, path, data, keys)
   end
 
-  defp push_remote(http_client, payload),
-    do: http_client.post(config_api_endpoint(), @request_headers, payload)
+  defp push_remote(http_client, path, payload) do
+    endpoint = URI.merge(config_api_endpoint(), path)
+    http_client.post(endpoint, @request_headers, payload)
+  end
 
   defp response_status_ok(http_client, client, status) when is_integer(status) do
     if status in 200..399 do
