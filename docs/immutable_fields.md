@@ -194,7 +194,8 @@ type Process {
 
 Agent is a bit more complicated, as fields can change more frequently, e.g. an agent is allowed to
 change their email or their username. We can only really rely on the `id` field, which is a ULID 
-(See our [repo][1] and this [twitter thread][2]).
+(See our [repo][1] and this [twitter thread][2]) and the canonical URL, which is a unique URL
+that refers to an agent on a specific instance.
 
 
 ### Graphql with removed fields
@@ -203,8 +204,7 @@ change their email or their username. We can only really rely on the `id` field,
 interface Agent {
   id: ID!
 
-  ## TODO: consider immutability
-  canonicalUrl: String ## added for Bonfire
+  canonicalUrl: String
 }
 ```
 
