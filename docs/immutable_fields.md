@@ -68,11 +68,6 @@ type EconomicEvent {
   hasPointInTime: DateTime
 
   """
-  A textual description or comment.
-  """
-  note: String
-
-  """
   Reference to an agreement between agents which specifies the rules or policies or calculations which govern this economic event.
   """
   agreedIn: URI
@@ -128,11 +123,6 @@ type Process {
   id: ID!
 
   """
-  An informal or formal textual identifier for a process. Does not imply uniqueness.
-  """
-  name: String!
-
-  """
   The planned beginning of the process.
   """
   hasBeginning: DateTime
@@ -151,11 +141,6 @@ type Process {
   The definition or specification for a process.
   """
   basedOn: ProcessSpecification
-
-  """
-  A textual description or comment.
-  """
-  note: String
 
   inputs(action: ID): [EconomicEvent!]
   outputs(action: ID): [EconomicEvent!]
