@@ -5,7 +5,7 @@ defmodule Bonfire.Reflow.EconomicProcesses do
   alias ValueFlows.Process.Processes
 
   def create(creator, attrs) do
-    with {:ok, process} <- EconomicEvents.create(creator, attrs),
+    with {:ok, process} <- Processes.create(creator, attrs),
          {:ok, signature} <- Bonfire.Reflow.sign(process),
          {:ok, _} <- Bonfire.Reflow.verify(signature) do
       repo().update(Signed.changeset(signature))

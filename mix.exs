@@ -1,3 +1,4 @@
+Code.eval_file("mess.exs")
 defmodule BonfireReflow.MixProject do
   use Mix.Project
 

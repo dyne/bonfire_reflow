@@ -6,8 +6,8 @@ defmodule Bonfire.Reflow.Users do
 
   def create(attrs, extras \\ nil) do
     with {:ok, user} <- Users.create(attrs, extras),
-         {:ok, public_key} <- Bonfire.Reflow.agent_public_key(user) do
-      repo().update(SignedUser.changeset(public_key))
+         {:ok, credentials} <- Bonfire.Reflow.agent_credentials(user) do
+      repo().update(SignedUser.changeset(credentials))
     end
   end
 end

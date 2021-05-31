@@ -34,11 +34,15 @@ defmodule Bonfire.Reflow.Apiroom do
   """
   @spec fetch(path :: binary, data :: map, keys :: map) :: {:ok, map} | {:error, term}
   def fetch(path, data, keys \\ nil) do
-    signatures(@default_http_client, path, data, keys)
+    fetch(@default_http_client, path, data, keys)
   end
 
   defp push_remote(http_client, path, payload) do
-    endpoint = URI.merge(config_api_endpoint(), path)
+    endpoint =
+      config_api_endpoint()
+      |> URI.merge(path)
+      |> URI.to_string()
+
     http_client.post(endpoint, @request_headers, payload)
   end
 
@@ -52,7 +56,7 @@ defmodule Bonfire.Reflow.Apiroom do
           _ -> nil
         end
 
-      {:error, {:request_failed, %{status: status, message: error_msg}}}
+      {:error, {:request_failed, %{status: status, message: Jason.decode!(error_msg)}}}
     end
   end
 
