@@ -112,9 +112,8 @@ type EconomicEvent {
 
 ## Process
 
-Similar thing with process, most fields can be considered immutable. The issue with process
-is that functions (not fields) like `inputs(...)` or `outputs(...)` can change if more events
-are added.
+Process is much more difficult, as adding functions like `inputs(..)` and `outputs(..)` will not
+be reliable, as these can change when new events are linked to it.
 
 ### GraphQL with removed fields
 
@@ -142,9 +141,6 @@ type Process {
   """
   basedOn: ProcessSpecification
 
-  inputs(action: ID): [EconomicEvent!]
-  outputs(action: ID): [EconomicEvent!]
-  unplannedEconomicEvents(action: ID): [EconomicEvent!]
   nextProcesses: [Process!]
   previousProcesses: [Process!]
   workingAgents: [Agent!]
@@ -161,10 +157,6 @@ type Process {
   The process with its inputs and outputs is part of the plan.
   """
   plannedWithin: Plan
-  committedInputs(action: ID): [Commitment!]
-  committedOutputs(action: ID): [Commitment!]
-  intendedInputs(action: ID): [Intent!]
-  intendedOutputs(action: ID): [Intent!]
 
   """
   The process with its inputs and outputs is part of the scenario.
